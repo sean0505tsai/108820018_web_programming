@@ -1,2 +1,2 @@
 # 111-1_web_programming_LAB
-LAB in class
+LAB & tasks in web programming class
