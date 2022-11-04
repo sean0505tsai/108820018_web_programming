@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .container {
+            position: relative;
+            width: 20%;
+            height: 20%;
+            float: left;
+        }
+
+        .container1 {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            float: left;
+        }
+
+        .image1 {
+            opacity: 1;
+            display: block;
+            width: 100%;
+            height: auto;
+            transition: .5s ease;
+            backface-visibility: hidden;
+            border-radius: 50%;
+        }
+
+        .image2 {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+            
+        }
+
+        .middle {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 85%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .container:hover .image {
+            opacity: 0.3;
+        }
+
+        .container:hover .middle {
+            opacity: 0.7;
+        }
+
+        .text {
+            background-color: #04AA6D;
+            color: white;
+            font-size: 16px;
+            padding: 16px 100px;
+        }
+        map.workmap{
+            width: auto;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="container">
+            <img src="avatar.png" alt="Avatar" class="image1">
+            <div class="middle">
+                <div class="text">John Doe</div>
+            </div>
+        </div>
+        <div class="container1">
+            <img src="avatar.png" alt="Workplace" usemap="#workmap" class="image2">
+            <map name="workmap">
+                <area shape="rect" coords="61,41,140,118" alt="Computer" href="computer.htm">
+            </map>
+        </div>
+    </div>
+
+</body>
+
+</html>
