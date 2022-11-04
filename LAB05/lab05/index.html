@@ -1,0 +1,61 @@
+<!-- HTML Lab Assignment 5 -->
+<!-- Deadline: 2022-11-09 23:59 -->
+
+<!-- [10%] 1. A Table (3x3 cells) with two different background colors for <th> and <td> -->
+<!-- [20%] 2. Two buttons to control the width of the table (200px, 500 px) -->
+<!-- [20%] 3. Three buttons to control the border with and cell spacing of the table -->
+<!-- [20%] 4. Four buttons to control the background color of the table (will not affect the color of table headings)-->
+<!-- [20%] 5. A reset button to reset the style to the original.-->
+<!-- [10%] 6. Separate the JavaScript code from the html file and upload both files to github. (javascript in an external file) -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!-- Write your Html code here -->
+    <div>
+        <table class="tb" id="score">
+            <tr>
+                <th>Math</th>
+                <th>English</th>
+                <th>Programming</th>
+            </tr>
+            <tr>
+                <td>90</td>
+                <td>60</td>
+                <td>80</td>
+            </tr>
+            <tr>
+                <td>80</td>
+                <td>86</td>
+                <td>98</td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <p>Change The Table Width</p>
+        <button type="button width" id="bt200px" onclick="changeWidth200px()">200px</button>
+        <button type="button width" id="bt500px" onclick="changeWidth500px()">500px</button>
+
+        <p>Change The Border and the Spacing Width</p>
+        <button type="button border" id="border1px" onclick="changeBorderWidth1px()">1px</button>
+        <button type="button border" id="border10px" onclick="changeBorderWidth10px()">10px</button>
+        <button type="button border" id="border20px" onclick="changeBorderWidth20px()">20px</button>
+
+        <p>Change the Table Color</p>
+        <button class="button color button1" onclick="changeTableBackgroundColor1()"></button>
+        <button class="button color button2" onclick="changeTableBackgroundColor2()"></button>
+        <button class="button color button3" onclick="changeTableBackgroundColor3()"></button>
+        <button class="button color button4" onclick="changeTableBackgroundColor4()"></button>
+        <p></p>
+        <button type="button " id="reset" onclick="resetStyle()">reset</button>
+    </div>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

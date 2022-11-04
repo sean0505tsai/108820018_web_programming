@@ -1,0 +1,64 @@
+body {
+    background-color: #FFF8D7;
+}
+
+img.a {
+    border-radius: 50%;
+}
+
+ul li a ::before {
+    color: red;
+}
+
+ul li b ::before {
+    color: blue;
+}
+
+div.side {
+    float: left;
+    width: 30%;
+}
+
+.content {
+    float: inline-start;
+    width: auto;
+    text-align: left;
+}
+
+.header {
+    height: 10%;
+    text-align: center;
+}
+
+.footer {
+    clear: both;
+    text-align: center;
+    background-color: #483434;
+}
+
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #6B4F4F;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    display: block;
+    color: #EED6C4;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navbar li a:hover {
+    background-color: #483434;
+    color: #FFF3E4;
+}
+
+.nestlist {}
