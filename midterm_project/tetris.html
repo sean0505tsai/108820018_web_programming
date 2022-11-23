@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris</title>
+    <link rel="stylesheet" href="style_tetris.css">
+</head>
+
+<body onload="onLoad()">
+    <script src="tetris.js"></script>
+    <div class="score">
+        <h1>Score:0</h1>
+    </div>
+
+    <div class="game_area" style="margin-left: 30%;">
+        <canvas id=""></canvas>
+        <canvas id="next"></canvas>
+    </div>
+
+    <div class="controller" style="margin-left: 35%;">
+        <button class="controller action" onclick="play()">▶</button>
+        <button class="controller action" onclick="moveLeft()">🢀</button>
+        <button class="controller action" onclick="moveDown()">🢃</button>
+        <button class="controller action" onclick="moveRight()">🢂</button>
+        <button class="controller action" onclick="rotate()">↺</button>
+        <button class="controller reset" id="resetButton" onclick="reset()">Reset</button>
+    </div>
+    
+</body>
+</html>

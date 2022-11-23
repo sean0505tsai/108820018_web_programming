@@ -1,0 +1,33 @@
+body{
+    background-color: #FBF8CC;
+}
+
+.score{
+    text-align: center;
+}
+
+button.controller{
+    height: 40px;
+    border: none;
+    border-radius: 2px;
+    font-size: 24px;
+    text-align: center;
+    margin: 10px 2px;
+    padding: 2px 10px;
+}
+
+button.controller.reset{
+    background-color: #FFCFD2;
+}
+
+button.controller.reset:hover{
+    background-color: #f6858c;
+}
+
+button.controller.action{
+    background-color: #B9FBC0;
+}
+
+button.controller.action:hover{
+    background-color: #66f674;
+}
