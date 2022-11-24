@@ -6,6 +6,23 @@ body{
     text-align: center;
 }
 
+canvas.game{
+    border: 1px solid black;
+    background-color: beige;
+}
+
+.gameArea{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.controller{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 button.controller{
     height: 40px;
     border: none;
