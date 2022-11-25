@@ -8,14 +8,9 @@
 </head>
 
 <body onload="onLoad()">
-    <script src="tetris.js"></script>
-    <div class="score">
-        <h1>Score:0</h1>
-    </div>
-
     <div class="gameArea">
-        <canvas id="game"></canvas>
-        <canvas id="next"></canvas>
+        
+        <canvas width="320" height="640" id="game"></canvas>
     </div>
 
     <div class="controller">
@@ -26,6 +21,6 @@
         <button class="controller action" onclick="rotate()">↺</button>
         <button class="controller reset" id="resetButton" onclick="reset()">Reset</button>
     </div>
-    
+    <script src="tetris.js"></script>
 </body>
 </html>

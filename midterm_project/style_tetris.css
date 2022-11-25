@@ -1,13 +1,13 @@
 body{
-    background-color: #FBF8CC;
+    background-color: #cbf3f0;
 }
 
 .score{
     text-align: center;
 }
 
-canvas.game{
-    border: 1px solid black;
+canvas{
+    border: 2px solid black;
     background-color: beige;
 }
 
@@ -42,9 +42,9 @@ button.controller.reset:hover{
 }
 
 button.controller.action{
-    background-color: #B9FBC0;
+    background-color: #70ff7e;
 }
 
 button.controller.action:hover{
-    background-color: #66f674;
+    background-color: #1cfc33;
 }
