@@ -2,6 +2,9 @@ const COLS = 10;
 const ROWS = 20;
 let score = 0;
 let tetrisArray = []
+let ctx = document.getElementById('game').getContext('2d');
+const PLAY = 1;
+const PAUSE = 0;
 
 const tetrominos = {
     1: [            // I
@@ -85,20 +88,18 @@ const colors = {
 };
 
 let gameArea = {
+
+    gameStatus : PAUSE,
     canvas: document.getElementById('game'),
     scoreBoard : document.getElementById('score'),
+
     start: function () {
         this.context = this.canvas.getContext("2d");
-        this.interval = setInterval(updateGameArea, 1000);
-        // this.scoreBoard = document.write(toString(score));
-        this.context.fillStyle = "#FF359A";
-        this.context.fillRect(0, 0, 30, 30);
+        this.interval = setInterval(updateGameArea, 50);
         initializeArray();
 
-        // console.log(tetrisArray);  // return the 2D array
-        // console.log(tetrisArray.length);
-
         window.addEventListener('keydown', function (e) {
+            console.log(e.code);
             if(e.code === "ArrowLeft"){
                 moveLeft();
             }
@@ -111,23 +112,61 @@ let gameArea = {
             if(e.code === "ArrowUp"){
                 rotate();
             }
-        })
+            if(e.code === "Space"){
 
-        window.addEventListener('keyup', function (e) {
-
+            }
         })
     },
 
-    clear: function () {
+    clear: function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    }
+    },
 
+    playGame: function(){
+        this.gameStatus = PLAY;
+    },
+
+    pauseGame: function(){
+        this.gameStatus = PAUSE;
+    },
 }
 
 let tetromino = {
-    isAlive: false,
+    matrixNum : 0,
+    currentRow : 0,        // upper left index
+    currentCol : 0,
     matrix,
-    color,
+
+    moveLeft: function(){
+        if(isValidMove(tetrominos[this.matrixNum]), this.row, this.col - 1){
+            this.col -= 1;
+        }
+    },
+
+    moveRight: function(){
+        if(isValidMove(tetrominos[this.matrixNum], this.row, this.col + 1)){
+            this.col += 1;
+        }
+    },
+
+    moveDown: function(){
+        if(isValidMove(tetrominos[this.matrixNum], row, col)){
+            this.row += 1;
+        }
+    },
+
+    onMove: function(){
+        this.row += 1;
+    },
+
+    rotateMatrix: function(){
+        this.matrix = rotateMatrix(this.matrix);
+    },
+
+    getNextTetromino: function(){
+        this.matrixNum = getRandomInt();
+    }
+    
 }
 
 function initializeArray(){
@@ -145,23 +184,27 @@ function onLoad() {
 }
 
 function play() {
+    gameArea.playGame();
     console.log("play");
 }
 
 function moveLeft() {
+    tetromino.moveLeft();
     console.log("arrow left");
 }
 
 function moveRight() {
+    tetromino.moveRight();
     console.log("arrow Right");
 }
 
 function moveDown() {
+    tetromino.moveDown();
     console.log("move down");
 }
 
 function rotate(){
-    // tetromino.
+    tetromino.rotateMatrix();
 }
 
 function rotateMatrix(matrix) {      // rotate clockwise
@@ -206,26 +249,43 @@ function getRandomInt() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getNextTetromino(){
-    num = getRandomInt();
-    let matrix = tetrominos[num];
-    let color = colors[num];
+function isValidMove(matrix, startRow, startCol) {
+    rows = matrix.length;
+    cols = matrix[0].length;
 
-    return{
-        matrix: matrix,
-        color: color
+    if((startRow + rows - 1) > B.length || startRow < 0) return false;      // check if out of right edge
+    
+    for (let row = 0; row < rows; row++) {                                  // check if collision
+        for (let col = 0; col < cols; col++) {
+            if (matrix[row][col] && tetrisArray[startRow + row][startCol + col]) return false;
+        }
+    }
+    return true;
+}
+
+function drawBlock(matrix, startRow, startCol){
+    row = matrix.length;
+    col = matrix[0].length;
+    endRow = startRow + row;
+    endCol = startCol + col;
+
+    for(let i = startRow; i < endRow; i++){
+        for(let j = startCol; j < endCol; j++){
+            if(matrix[i - startRow][j - startCol] !== 0){
+                ctx.fillStyle = colors[matrix[i - startRow][j - startCol]];
+                ctx.fillRect(32*j + 1 , 32*i + 1, 30, 30);
+            }
+        }
     }
 }
 
-function drawBlock(matrix, color, startRow, startCol, ctx){
-    row = matrix.length;
-    col = matrix[0].length;
-    endRow = startRow + col;
-    endCol = startCol + row;
-    for(let i = startRow; i < endRow; i++){
-        for(let j = startCol; j < endCol; j++){
-            ctx.fillStyle = colors[color];
-            ctx.fillRect(32*col + 1 , 32*row + 1, 30, 30);
+function drawGameArea(){
+    for(let row = 0; row < ROWS; row++){
+        for(let col = 0; col < COLS; col++){
+            if(tetrisArray[row][col] !== 0){
+                ctx.fillStyle = colors[tetrisArray[row][col]];
+                ctx.fillRect(32*col + 1 , 32*row + 1, 30, 30);
+            }
         }
     }
 }
@@ -241,14 +301,30 @@ function updateScore(){
     }
 }
 
+function moveToBottomAndPut(){
+
+}
+
+function writeTetromino(matrix, startRow, startCol){
+    row = matrix.length;
+    col = matrix[0].length;
+
+    for(let i = 0; i < row; i++){
+        for(let j = 0; j < col; j++){
+            tetrisArray[i + startRow][j + startCol] = matrix[i][j];
+        }
+    }
+}
+
 function showGameOver(){
+    gameArea.pauseGame();
     ctx = document.getElementById('game').getContext('2d');
     ctx.font = "40px Arial";
     ctx.fillStyle = "black";
     ctx.fillText("Game Over", 50, 300);
 }
 
-function showScore(ctx){
+function showScore(){
     ctx.font = "20px Arial";
     ctx.fillStyle = "black";
     ctx.fillText("Score: "+score, 5, 20);
@@ -256,13 +332,8 @@ function showScore(ctx){
 
 function updateGameArea() {         // main game loop
     gameArea.clear();
-    let ctx = document.getElementById('game').getContext('2d');
-    // for(let row = 0; row < 20; row++){
-    //     for(let col = 0; col < 10; col++){
-    //         ctx.fillStyle = colors[getRandomInt()];
-    //         ctx.fillRect(32*col + 1 , 32*row + 1, 30, 30);
-    //     }
-    // }
-    drawBlock(tetrominos[6], colors[6], 5, 7, ctx);
+    drawGameArea(ctx);
+
+    drawBlock(tetrominos[1], 3, 5);
     showScore(ctx);
 }

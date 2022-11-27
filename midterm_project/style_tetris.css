@@ -1,5 +1,5 @@
 body{
-    background-color: #cbf3f0;
+    background-color: #293241;
 }
 
 .score{
@@ -7,8 +7,8 @@ body{
 }
 
 canvas{
-    border: 2px solid black;
-    background-color: beige;
+    border: 2px solid #00a7e1;
+    background-color: #E0FBFC;
 }
 
 .gameArea{
@@ -34,17 +34,17 @@ button.controller{
 }
 
 button.controller.reset{
-    background-color: #FFCFD2;
+    background-color: #ec8d75;
 }
 
 button.controller.reset:hover{
-    background-color: #f6858c;
+    background-color: #e97254;
 }
 
 button.controller.action{
-    background-color: #70ff7e;
+    background-color: #98C1D9;
 }
 
 button.controller.action:hover{
-    background-color: #1cfc33;
+    background-color: #63a9d2;
 }
