@@ -302,7 +302,7 @@ function updateScore(){
 }
 
 function moveToBottomAndPut(){
-
+    for(let i = )
 }
 
 function writeTetromino(matrix, startRow, startCol){
