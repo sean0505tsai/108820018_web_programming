@@ -1,6 +1,5 @@
 const COLS = 10;
 const ROWS = 20;
-let score = 0;
 let tetrisArray = []
 let ctx = document.getElementById('game').getContext('2d');
 const PLAY = 1;
@@ -92,6 +91,7 @@ let gameArea = {
     gameStatus : PAUSE,
     canvas: document.getElementById('game'),
     scoreBoard : document.getElementById('score'),
+    score : 0,
 
     start: function () {
         this.context = this.canvas.getContext("2d");
@@ -128,6 +128,16 @@ let gameArea = {
 
     pauseGame: function(){
         this.gameStatus = PAUSE;
+    },
+
+    addScore: function(){
+        this.score += 1;
+    },
+
+    showScore: function(){
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "black";
+        ctx.fillText("Score: " + this.score, 5, 20);
     },
 }
 
@@ -291,19 +301,21 @@ function drawGameArea(){
 }
 
 function updateScore(){
-    let val = 0;
-    for(let row = 0; row < 20; row++){
-        for(let col = 0; col < 10; col++){
-            if(tetrisArray[row][col] === 0){
-                break;
-            }
+    let i = 1;
+    for(let row = 0; row < ROWS; row++){
+        i = 1;
+        for(let col = 0; col < COLS; col++){
+            i = (i && tetrisArray[row][col]);
         }
+        if(i) gameArea.addScore();
     }
 }
 
-function moveToBottomAndPut(){
-    for(let i = )
-}
+// function moveToBottomAndPut(matrix, currentRow, currentCol){
+//     for(let row = currentRow; row<ROWS; row++){
+
+//     }
+// }
 
 function writeTetromino(matrix, startRow, startCol){
     row = matrix.length;
@@ -333,6 +345,7 @@ function showScore(){
 function updateGameArea() {         // main game loop
     gameArea.clear();
     drawGameArea(ctx);
+    tetromino.onMove();
 
     drawBlock(tetrominos[1], 3, 5);
     showScore(ctx);
