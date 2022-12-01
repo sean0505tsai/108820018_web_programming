@@ -95,11 +95,13 @@ let gameArea = {
 
     start: function () {
         this.context = this.canvas.getContext("2d");
-        this.interval = setInterval(updateGameArea, 50);
+        this.interval = setInterval(updateGameArea, 300);
+        this.pauseGame();
         initializeArray();
+        tetromino.getNewTetromino();
 
         window.addEventListener('keydown', function (e) {
-            console.log(e.code);
+            // console.log(e.code);
             if(e.code === "ArrowLeft"){
                 moveLeft();
             }
@@ -139,43 +141,51 @@ let gameArea = {
         ctx.fillStyle = "black";
         ctx.fillText("Score: " + this.score, 5, 20);
     },
+
+    getScore: function(){
+        return this.score;
+    },
 }
 
 let tetromino = {
-    matrixNum : 0,
-    currentRow : 0,        // upper left index
-    currentCol : 0,
-    matrix,
+    row : 0,        // upper left index
+    col : 0,
+    matrix: [],
+
+    getNewTetromino: function(){
+        this.matrix = tetrominos[getRandomInt()];
+    },
 
     moveLeft: function(){
-        if(isValidMove(tetrominos[this.matrixNum]), this.row, this.col - 1){
+        if(isValidMove(this.matrix, this.row, this.col - 1)){
             this.col -= 1;
         }
     },
 
     moveRight: function(){
-        if(isValidMove(tetrominos[this.matrixNum], this.row, this.col + 1)){
+        if(isValidMove(this.matrix, this.row, this.col + 1)){
             this.col += 1;
         }
     },
 
     moveDown: function(){
-        if(isValidMove(tetrominos[this.matrixNum], row, col)){
+        if(isValidMove(this.matrix, row, col)){
             this.row += 1;
         }
     },
 
     onMove: function(){
         this.row += 1;
+        console.log(this.row);
     },
 
     rotateMatrix: function(){
         this.matrix = rotateMatrix(this.matrix);
     },
 
-    getNextTetromino: function(){
-        this.matrixNum = getRandomInt();
-    }
+    drawTetromino: function(){
+        drawBlock(this.matrix, this.currentRow, this.currentCol)
+    },
     
 }
 
@@ -263,7 +273,7 @@ function isValidMove(matrix, startRow, startCol) {
     rows = matrix.length;
     cols = matrix[0].length;
 
-    if((startRow + rows - 1) > B.length || startRow < 0) return false;      // check if out of right edge
+    if((startCol + cols - 1) > COLS || startRow < 0) return false;      // check if out of Left & Right edge
     
     for (let row = 0; row < rows; row++) {                                  // check if collision
         for (let col = 0; col < cols; col++) {
@@ -311,6 +321,12 @@ function updateScore(){
     }
 }
 
+function removeRow(row){
+    for(let col = 0; i<COLS; i++){
+        tetrisArray[row][col] = tetrisArray[row - 1]
+    }
+}
+
 // function moveToBottomAndPut(matrix, currentRow, currentCol){
 //     for(let row = currentRow; row<ROWS; row++){
 
@@ -339,14 +355,15 @@ function showGameOver(){
 function showScore(){
     ctx.font = "20px Arial";
     ctx.fillStyle = "black";
-    ctx.fillText("Score: "+score, 5, 20);
+    ctx.fillText("Score: "+ gameArea.getScore(), 5, 20);
 }
 
 function updateGameArea() {         // main game loop
     gameArea.clear();
     drawGameArea(ctx);
-    tetromino.onMove();
+    // tetromino.onMove();
+    tetromino.drawTetromino();
 
-    drawBlock(tetrominos[1], 3, 5);
-    showScore(ctx);
+    // drawBlock(tetrominos[1], 3, 5);
+    showScore();
 }
