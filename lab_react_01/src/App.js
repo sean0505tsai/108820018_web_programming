@@ -2,12 +2,15 @@ import logo from './logo.svg';
 import './App.css';
 import Title from './components/title';
 
+import { ProSidebarProvider } from 'react-pro-sidebar';
+
 function App() {
 	return (
+		// <ProSidebarProvider>
 		<div className="App">
 			<Title />
 			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
+				{/* <img src={logo} className="App-logo" alt="logo" /> */}
 				<p>
 					Hello class!
 				</p>
@@ -21,6 +24,7 @@ function App() {
 				</a>
 			</header>
 		</div>
+		// </ProSidebarProvider>
 	);
 }
 
