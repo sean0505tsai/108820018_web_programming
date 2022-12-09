@@ -1,18 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import Title from './components/title';
-import Layout from './components/sidebar';
+import { Sidebar, Menu, MenuItem, useProSidebar } from 'react-pro-sidebar';
 
-import { ProSidebarProvider } from 'react-pro-sidebar';
 
 function App() {
 	return (
-		// <ProSidebarProvider>
 		<div className="App">
 			<Title />
-			{/* <Layout/> */}
+			<Layout />
 			<header className="App-header">
-				{/* <img src={logo} className="App-logo" alt="logo" /> */}
 				<p>
 					Hello World
 				</p>
@@ -26,7 +22,25 @@ function App() {
 				</a>
 			</header>
 		</div>
-		// </ProSidebarProvider>
+	);
+}
+
+function Layout() {
+	const { collapseSidebar } = useProSidebar();
+
+	return (
+		<div style={{ display: 'flex', height: '100%' }}>
+			<Sidebar>
+				<Menu>
+					<MenuItem> Documentation</MenuItem>
+					<MenuItem> Calendar</MenuItem>
+					<MenuItem> E-commerce</MenuItem>
+				</Menu>
+			</Sidebar>
+			<main>
+				<button onClick={() => collapseSidebar()}>Collapse</button>
+			</main>
+		</div>
 	);
 }
 

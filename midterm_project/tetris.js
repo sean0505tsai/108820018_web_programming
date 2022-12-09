@@ -231,8 +231,7 @@ function rotateMatrix(matrix) {      // rotate clockwise
     console.log("rotate");
     return rowReverse(transpose(matrix));    
 }
-
-function transpose(matrix){
+function transpose(matrix){         // helper function of rotateMatrix()
     let row = matrix.length;
     let col = matrix[0].length;
     let temp = 0;
@@ -245,8 +244,7 @@ function transpose(matrix){
     }
     return matrix;
 }
-
-function rowReverse(matrix){
+function rowReverse(matrix){        // helper function of rotateMatrix()
     row = matrix.length;
     col = matrix[0].length;
     for (let i = 0; i < row; i++) {
