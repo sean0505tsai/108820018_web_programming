@@ -6,9 +6,10 @@ import React, { useState } from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { Routes, Route, Outlet, Link, useSearchParams, useNavigate } from "react-router-dom";
 
-// For firebase
-import { database } from './firebase'
-import { ref, push, child, update } from "firebase/database";
+import {database} from './firebase'
+import {ref, push, child, update} from "firebase/database";
+import { getDatabase, onValue, query } from "firebase/database";
+import Album from './components/Album';
 
 function App() {
   return (
@@ -17,9 +18,12 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="search" element={<Search />} />
-          <Route path="post" element={<Post />} />
+			 <Route path="post" element={<Post />} />
           <Route path="*" element={<NoMatch />} />
-        </Route>
+	     </Route>
+       <Route path="album" element={<Album/>}>
+
+       </Route>
       </Routes>
     </div>
   );
@@ -28,7 +32,7 @@ function App() {
 function Layout() {
   return (
     <div>
-      <Title />
+	   <Title />
       <MySidebar />
       <Outlet />
     </div>
@@ -36,13 +40,14 @@ function Layout() {
 }
 
 function MySidebar() {
-  return (
+  return(
     <div id="header">
       <Sidebar>
         <Menu>
-          <MenuItem routerLink={<Link to="/home" />}> Home </MenuItem>
-          <MenuItem routerLink={<Link to="/search" />}> Search </MenuItem>
-          <MenuItem routerLink={<Link to="/post" />}> Post </MenuItem>
+          <MenuItem routerLink={<Link to="/" />}> Home </MenuItem>
+			 <MenuItem routerLink={<Link to="/search" />}> Search </MenuItem>
+			 <MenuItem routerLink={<Link to="/post" />}> Post </MenuItem>
+       <MenuItem routerLink={<Link to="/album"/>}>Album</MenuItem>
         </Menu>
       </Sidebar>
     </div>
@@ -50,7 +55,7 @@ function MySidebar() {
 }
 
 function Title() {
-  return (
+  return(
     <nav className="bg-dark navbar-dark navbar">
       <div className="row col-12 d-flex justify-content-center text-white">
         <h3>Welcome to NTUT Web Programming</h3>
@@ -83,7 +88,7 @@ function Search() {
   // const navigate = useNavigate();
 
   const handleSubmit = (event) => {
-    // navigate('/search')
+	  // navigate('/search')
   };
 
   return (
@@ -94,50 +99,90 @@ function Search() {
           Search:
           <input name="q" />
         </label>
-        <input type="submit" value="Submit" />
-      </form>
+		  <input type="submit" value="Submit" />
+     </form>
     </div>
   );
 }
 
-// For firebase
-function Post() {
-  const [post, setPost] = useState();
+function ListItem(props) {
+  return <li>{props.post}</li>;
+}
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name == 'post') {
-      setPost(value)
-    }
+class Post extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      post: null,
+      posts: [],
+    };
   }
 
-  const handleSubmit = (e) => {
-    let obj = {
-      post: post,
-    }
+  getPosts = () => {
+    const db = getDatabase();
+    const recentPostsRef = query(ref(db, 'posts/'));
+    let newPosts = [];
 
+    onValue(recentPostsRef, (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        const childKey = childSnapshot.key;
+        const childData = childSnapshot.val().post;
+        newPosts.push({childKey, childData});
+      });
+      this.setState({posts:newPosts});
+    }, {
+      onlyOnce: true
+    });
+  }
+
+  componentDidMount() {
+	  this.getPosts();
+  }
+
+  handleChange = (e) => {
+     const {name , value} = e.target;
+     if (name == 'post') {
+        this.state.post = value;
+     }
+  }
+
+  handleSubmit = (e) => {
+    let obj = {
+      post : this.state.post,
+    }
     // Create a unique key for new posts
     const newPostKey = push(child(ref(database), 'posts')).key;
     const updates = {};
     updates['/posts/' + newPostKey] = obj;
     update(ref(database), updates);
 
-    // To prevent the page from reloading; very useful for debugging
+    /* TODO: call the method to get the posts */
+    this.getPosts();
     e.preventDefault()
   };
 
-  return (
-    <div>
-      <h2>Submit your post!</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Search:
-          <input name="post" onChange={handleChange} />
-        </label>
-        <input type="submit" value="Post!" />
-      </form>
-    </div>
-  );
+  render() {
+    const listPosts = this.state.posts.map((v) =>
+      <ListItem key={v.childKey.toString()} post={v.childData} />
+    /* TODO: convert this.state.posts into a list of <ListItem>. Remember to set the key and the post props */
+    );
+
+    return (
+      <div>
+         <ul>
+           {listPosts}
+         </ul>
+        <h2>Submit your post!</h2>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            New post:
+            <input name="post" onChange={this.handleChange}/>
+          </label>
+          <input type="submit" value="Post!" />
+       </form>
+      </div>
+    );
+  }
 }
 
 export default App;

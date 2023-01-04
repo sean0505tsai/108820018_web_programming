@@ -57,6 +57,7 @@ class Game extends React.Component {
 			xIsNext: true,
 			timerKey: 0,
 			timeIsUp: false,
+			status: null,
 		};
 	}
 
@@ -111,7 +112,7 @@ class Game extends React.Component {
 
 		let status;
 		if (winner) {
-			status = "Winner: " + winner;
+			status = "Winner: " + winner;			// declare winner
 		} else {
 			status = "Next player: " + (this.state.xIsNext ? "X" : "O");
 		}
